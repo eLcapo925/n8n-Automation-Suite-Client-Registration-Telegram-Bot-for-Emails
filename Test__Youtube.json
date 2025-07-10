@@ -1,0 +1,312 @@
+{
+  "name": "Test__Youtube",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Email }}",
+        "subject": "Propuesta de Automatización-Lambda Automations",
+        "emailType": "text",
+        "message": "={{ $json.message.content }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        360,
+        -60
+      ],
+      "id": "009d05c4-575f-4dfe-83b9-4b738e9327ac",
+      "name": "Send a message",
+      "webhookId": "920a9022-68b4-4b41-8d98-c4c7baa31b76",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hA7HdF2NzDbKUmGA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Contacta con Lambda Automations",
+        "formDescription": "Te daremos respuesta lo antes posible",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nombre",
+              "placeholder": "Carlos"
+            },
+            {
+              "fieldLabel": "Apellido",
+              "placeholder": "Reyes"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "carlosreyes@correo.com"
+            },
+            {
+              "fieldLabel": "Presupuesto",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "1000-2000$"
+                  },
+                  {
+                    "option": "2000-3000$"
+                  },
+                  {
+                    "option": "3000-4000$"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Describe tu necesidad de automatización ",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Enviar"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        -60
+      ],
+      "id": "5cca72c3-6930-4415-ad64-21e74569ba2b",
+      "name": "On form submission",
+      "webhookId": "0978b135-e6ff-4536-9370-00dbc085fd3e"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Eres un redactor de correos profesionales agradable y directo. Tu objetivo es persuadir al cliente con un copywriting profesional. ",
+              "role": "assistant"
+            },
+            {
+              "content": "=Debes de crear un correo electronico con intención de agendar reunión con un cliente cuyos datos hemos recogido a traves de un formulario. No me devuelvas el asunto del correo electronico, con el cuerpo es suficiente.\n\nNo modifique la estructura de \"Porfavor, agenda tu reunión en el siguiente enlace: https://cal.com/cosas-muchas-ufm07m/15min?user=cosas-muchas-ufm07m&overlayCalendar=true\"\n\nURL del enlace del calendario: https://cal.com/cosas-muchas-ufm07m/15min?user=cosas-muchas-ufm07m&overlayCalendar=true\n\nEl URL del enlace del calendario debe ser siempre igual y no se puede mofidicar\n\nLos datos de entrada son:\n\nnombre:{{ $json.Nombre }}\napellido:{{ $json.Apellido }}\nnecesidad del cliente: {{ $json['Describe tu necesidad de automatización '] }}\n\n______________________________\n\nEjemplo de correo electrónico, empleado a modo de referencia pero no lo uses como guia absoluta. Utiliza Martin como nombre del remitente del correo y CEO de Lamda Automations como el puesto del remitente del correo en la empresa\n\nHola {nombre},\n\nMe complace enormemente que deposites tu confianza en lambda automations. 'Texto personalizado persuasivo relacionado con {necesidad de cliente}'\n\nPor favor, agenda tu reunión en el siguiente enlace: https://cal.com/cosas-muchas-ufm07m/15min?user=cosas-muchas-ufm07m&overlayCalendar=true\n\nSaludos,\n\nMartin Fierro, CEO. Lamda Automations. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -80,
+        -60
+      ],
+      "id": "912c8f34-761c-4727-8d67-c26443212576",
+      "name": "persn_correos",
+      "credentials": {
+        "openAiApi": {
+          "id": "JFuDFJIvrYW9yXFz",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CREATED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        160
+      ],
+      "id": "51d6a1f7-01d1-4f61-b214-a50ea0846018",
+      "name": "Cal.com Trigger",
+      "webhookId": "d50b935e-80c5-47b2-a752-167b08d6d7c3",
+      "credentials": {
+        "calApi": {
+          "id": "X09jal2BKqO133pm",
+          "name": "Cal account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.attendees[0].email }}",
+        "subject": "Confirmación reunión automatización de procesos IA",
+        "message": "=Hola, {{ $json.attendees[0].name }}\n<br><br>\nSimplemente recordarte que nos vemos el {{ $json.startTime.toDateTime().setLocale('ES').format('EEEE') }}\n<br><br>\nSaludos \n<br><br>\nMatin Fierro\nCEO Lambda Automations ",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        20,
+        160
+      ],
+      "id": "26bc08e3-e00a-4b1e-98b7-a5166dcdf276",
+      "name": "Send a message1",
+      "webhookId": "43612c23-bb12-4ef0-ac1b-de03288d135f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hA7HdF2NzDbKUmGA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kosjIG7s_cn6p0hDZ6Mi777lhyLuoExo3yvE1gAGlyc",
+          "mode": "list",
+          "cachedResultName": "leads_estado_CRM",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kosjIG7s_cn6p0hDZ6Mi777lhyLuoExo3yvE1gAGlyc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kosjIG7s_cn6p0hDZ6Mi777lhyLuoExo3yvE1gAGlyc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nombre": "={{ $('Cal.com Trigger').item.json.attendees[0].name }}",
+            "Etapa": "Aceptado",
+            "Correo": "={{ $('Cal.com Trigger').item.json.attendees[0].email }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nombre",
+              "displayName": "Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Etapa",
+              "displayName": "Etapa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Correo",
+              "displayName": "Correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        360,
+        160
+      ],
+      "id": "bad1efd8-2d1d-45ca-a54d-1efeb74fe5b7",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0Jcle0ze9BGgiUhM",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "persn_correos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "persn_correos": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal.com Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ca02bdcd-6db5-4b4e-a497-7c5079319aca",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "990c5649e7b614b25a5d286ebe0ac49b7c6bf4f0fda9bda585b570224b7c4cf2"
+  },
+  "id": "TtcvuQVUNzdoo2Pw",
+  "tags": [
+    {
+      "createdAt": "2025-07-02T19:24:13.569Z",
+      "updatedAt": "2025-07-02T19:24:13.569Z",
+      "id": "poxHC3oJVquigUts",
+      "name": "Youtube"
+    }
+  ]
+}
