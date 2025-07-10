@@ -17,7 +17,7 @@
 ✅ cal.com (API de agendamiento)  
 
 **Captura del sistema**:  
-![Sistema de Registro](images/image.png)  
+![Sistema de Registro](images/clientes.png)  
 *Flujo completo desde el registro hasta el agendamiento*
 
 ---
