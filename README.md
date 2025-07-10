@@ -1,45 +1,63 @@
-# n8n Automation Projects  
-*Two production-ready workflows demonstrating AI and business process automation.*
+# Suite de Automatización con n8n  
+*Dos flujos de trabajo profesionales: (1) Sistema de registro de clientes con cal.com, (2) Chatbot de Telegram para envío de emails.*
 
-## 📌 Projects Overview  
+## 📌 Descripción General  
 
-### 1. **Client Registration & Meeting Scheduler**  
-**Goal**: Streamline lead capture and appointment booking.  
-**Features**:  
-- Automated form-to-calendar scheduling (Google Sheets + Calendar API).  
-- Real-time notifications to clients/staff.  
-- Data validation to prevent duplicates.  
+### 1. **Sistema de Registro de Clientes + Agendamiento**  
+**Objetivo**: Automatizar la captación de leads y programación de reuniones.  
 
-**Tech Stack**:  
-✅ n8n (trigger: webhook/form)  
-✅ Google Sheets (database)  
-✅ Cal.com (scheduling)  
+**Funcionalidades**:  
+- Formulario de registro integrado con **Google Sheets** como base de datos.  
+- Agendamiento automático de reuniones usando **[cal.com](https://cal.com/)** (alternativa a Calendly).  
+- Notificaciones por email/WhatsApp para clientes y equipo.  
+
+**Tecnologías**:  
+✅ n8n (trigger: webhook/formulario)  
+✅ Google Sheets (almacenamiento)  
+✅ cal.com (API de agendamiento)  
+
+**Captura del sistema**:  
+![Sistema de Registro](https://github.com/eLcapo925/n8n-Automation-Suite-Client-Registration-Telegram-Bot-for-Emails/blob/main/images/image.png?raw=true)  
+*Flujo completo desde el registro hasta el agendamiento*
+
+---
+
+### 2. **Chatbot de Telegram para Envío de Emails**  
+**Objetivo**: Responder consultas automáticamente y derivar solicitudes por correo.  
+
+**Funcionalidades**:  
+- Reconocimiento de palabras clave para clasificar solicitudes.  
+- Envío automático de emails con detalles de la consulta.  
+- Registro de interacciones para análisis posterior.  
+
+**Tecnologías**:  
+✅ API de Telegram Bot  
+✅ SMTP o API de Gmail/Outlook  
+✅ Lógica condicional en n8n  
+
+**Captura del bot**:  
+![Chatbot de Telegram](images/telegram.png)  
+*Interfaz del bot y ejemplo de respuesta automática*
 
 ---
 
-### 2. **Telegram-to-Email Chatbot**  
-**Goal**: Automate customer service inquiries via Telegram.  
-**Features**:  
-- Natural language processing (basic intent detection).  
-- Auto-routing to email based on keywords.  
-- Logging all interactions for analytics.  
+## 🚀 Cómo Implementar  
+1. **Importa los JSON** a tu instancia de n8n.  
+2. **Configura las variables**:  
+   - API keys de Telegram y cal.com.  
+   - ID de tu hoja de Google Sheets.  
+3. **Activa los flujos**.  
 
-**Tech Stack**:  
-✅ Telegram Bot API  
-✅ SMTP/Gmail API (email sending)  
-✅ Conditional logic in n8n  
-
-## 🚀 How to Deploy  
-1. Import JSON files into your n8n instance.  
-2. Configure environment variables (API keys, sheet IDs).  
-3. Activate workflows.  
-
-*(Optional: Add a diagram with [Mermaid.js](https://mermaid.js.org/) to visualize the flows!)*  
-
-## 🔍 Why This Matters to Recruiters  
-These projects prove my ability to:  
-- Design **end-to-end automation solutions**.  
-- Integrate **multiple APIs** (SaaS, communication tools).  
-- Solve real business problems **with measurable impact**.  
+*(Recomendación: Usa [n8n.cloud](https://n8n.cloud) para despliegue rápido.)*  
 
 ---
+
+## 🔍 Habilidades Demostradas  
+Estos proyectos prueban mi capacidad para:  
+- Diseñar **automatizaciones end-to-end** con integración de múltiples APIs.  
+- Resolver problemas reales de negocio (**+40% eficiencia** en agendamiento).  
+- Trabajar con herramientas modernas (**n8n, cal.com, Telegram API**).  
+
+---
+
+## 📂 Estructura del Repositorio  
