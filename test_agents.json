@@ -1,0 +1,201 @@
+{
+  "name": "test_agents",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "Tue eres un asistente virtual para enviar correos electrónicos. Para eso tiene la herramienta \"Send a message in Gmail\". Para enviar el correo debes primero solicitarle al usuario la dirección del correo, después solicitar el asunto del correo y finalmente el cuerpo del correo. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        -280
+      ],
+      "id": "53408bc2-029d-41c8-83c3-497818d3f20e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -640,
+        -40
+      ],
+      "id": "a3041389-f6b0-422f-8713-862c7df7753a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "JFuDFJIvrYW9yXFz",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -380,
+        -40
+      ],
+      "id": "1e874116-16d9-4240-84de-90a73d2b9cd7",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        -120,
+        -40
+      ],
+      "id": "7df81667-2c8a-4e42-84c9-c25273ae7af1",
+      "name": "Send a message in Gmail",
+      "webhookId": "4ae013fd-5bed-4667-b298-02871723b8a4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "hA7HdF2NzDbKUmGA",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -760,
+        -280
+      ],
+      "id": "6e1e32dc-e946-40d2-9b72-9ea167583f09",
+      "name": "Telegram Trigger",
+      "webhookId": "60eedb33-812d-4e19-9d5a-9c5c0a80fd4a",
+      "credentials": {
+        "telegramApi": {
+          "id": "onCBVsHdsWQHKgwj",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -140,
+        -280
+      ],
+      "id": "1ac107c8-acd2-4e46-bd3e-325e47d47663",
+      "name": "Send a text message",
+      "webhookId": "e534c4e4-f7dc-4798-9e50-d71c4b801dd4",
+      "credentials": {
+        "telegramApi": {
+          "id": "onCBVsHdsWQHKgwj",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8af3293a-12a4-4263-a3e8-ede02727e1cb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "990c5649e7b614b25a5d286ebe0ac49b7c6bf4f0fda9bda585b570224b7c4cf2"
+  },
+  "id": "ZjiErRpbsKY82ceB",
+  "tags": []
+}
