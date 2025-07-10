@@ -23,7 +23,14 @@
 ---
 
 ### 2. **Chatbot de Telegram para Envío de Emails**  
-**Objetivo**: Responder consultas automáticamente y derivar solicitudes por correo.  
+**Objetivo**: Responder consultas automáticamente y derivar solicitudes por correo. 
+
+## Chatbot de Telegram  
+**Bot activo**: [@rodrigo925_bot](https://t.me/rodrigo925_bot)  
+*¡Pruébalo! Envía un mensaje como "Hola" o "Soporte".*  
+
+[![Bot en acción](https://img.shields.io/badge/🚀-Probar_Bot-blue?style=for-the-badge&logo=telegram)](https://t.me/rodrigo925_bot)  
+
 
 **Funcionalidades**:  
 - Reconocimiento de palabras clave para clasificar solicitudes.  
