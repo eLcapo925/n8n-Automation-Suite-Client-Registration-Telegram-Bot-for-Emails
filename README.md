@@ -17,7 +17,7 @@
 ✅ cal.com (API de agendamiento)  
 
 **Captura del sistema**:  
-![Sistema de Registro](https://github.com/eLcapo925/n8n-Automation-Suite-Client-Registration-Telegram-Bot-for-Emails/blob/main/images/image.png?raw=true)  
+![Sistema de Registro](images/image.png)  
 *Flujo completo desde el registro hasta el agendamiento*
 
 ---
